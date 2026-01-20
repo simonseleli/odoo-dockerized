@@ -1,7 +1,7 @@
 services:
   odoo:
     build: .
-    user: odoo
+    user: root
     depends_on:
       - db
     volumes:
