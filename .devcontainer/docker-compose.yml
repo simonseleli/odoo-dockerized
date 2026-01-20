@@ -1,0 +1,35 @@
+services:
+  odoo:
+    build: .
+    user: odoo
+    depends_on:
+      - db
+    volumes:
+      - ../conf:/etc/odoo:ro
+      - ../custom-addons:/mnt/extra-addons
+      - odoo-data:/var/lib/odoo
+      - ..:/workspace
+    ports:
+      - "8069:8069"
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo
+    tty: true
+    stdin_open: true
+    working_dir: /workspace
+    command: sleep infinity
+    
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
+  odoo-data:
+
