@@ -1,7 +1,8 @@
+version: "3.8"
+
 services:
   odoo:
     build: .
-    user: root
     depends_on:
       - db
     volumes:
@@ -19,7 +20,7 @@ services:
     stdin_open: true
     working_dir: /workspace
     command: sleep infinity
-    
+
   db:
     image: postgres:14
     environment:

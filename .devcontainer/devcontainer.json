@@ -4,7 +4,8 @@
   "service": "odoo",
   "workspaceFolder": "/workspace",
   "shutdownAction": "stopCompose",
-  "remoteUser": "root",
+  "remoteUser": "vscode",
+  "forwardPorts": [8069,5432],
   "customizations": {
     "vscode": {
       "extensions": [
