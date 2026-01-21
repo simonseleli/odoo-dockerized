@@ -13,7 +13,7 @@ Open in dev container and then
 
 
 # Method 1: Use the Odoo binary from official image
-/usr/bin/odoo -c /etc/odoo/odoo.conf
+odoo
 
 # Method 2: With more verbose logging
 /usr/bin/odoo -c /etc/odoo/odoo.conf --log-level=debug

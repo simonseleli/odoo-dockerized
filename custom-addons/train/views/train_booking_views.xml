@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Form View for Bookings -->
+    <record id="view_booking_form" model="ir.ui.view">
+        <field name="name">booking.form</field>
+        <field name="model">train.booking</field>
+        <field name="arch" type="xml">
+            <form string="Train Booking">
+                <header>
+                    <!-- State Management Buttons -->
+                    <button name="action_confirm" type="object" string="Confirm" class="oe_highlight"
+                            attrs="{'invisible': [('state', 'not in', ['draft', 'cancelled'])]}"/>
+                    <button name="action_cancel" type="object" string="Cancel" class="btn-danger"
+                            attrs="{'invisible': [('state', '!=', 'confirmed')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,cancelled"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name" readonly="1"/>
+                        <field name="passenger_id"/>
+                        <field name="route_id" context="{'show_available_seats': True}"/>
+                        <field name="train_id" readonly="1"/>
+                        <field name="from_station_id" readonly="1"/>
+                        <field name="to_station_id" readonly="1"/>
+                        <field name="seat_count"/>
+                        <field name="booking_date"/>
+                    </group>
+                    <group>
+                        <field name="ticket_ids" widget="one2many_list" options="{'no_create': True}" readonly="1"/>
+                    </group>
+
+                    <!-- Status Notifications -->
+                    <div class="alert alert-info" role="alert" attrs="{'invisible': [('state', '!=', 'cancelled')]}">
+                        <strong>Cancelled Booking</strong> - Click "Confirm" to reactivate.
+                    </div>
+                    <div class="alert alert-warning" role="alert" attrs="{'invisible': [('state', '!=', 'draft')]}">
+                        <strong>Draft Booking</strong> - Confirm to reserve seats.
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View for Bookings -->
+    <record id="view_booking_tree" model="ir.ui.view">
+        <field name="name">booking.tree</field>
+        <field name="model">train.booking</field>
+        <field name="arch" type="xml">
+            <tree string="Train Bookings">
+                <field name="name"/>
+                <field name="passenger_id"/>
+                <field name="route_id"/>
+                <field name="train_id"/>
+                <field name="seat_count"/>
+                <field name="booking_date"/>
+                <field name="state" widget="badge"
+                       options="{'classes': {
+                           'draft': 'warning',
+                           'confirmed': 'success',
+                           'cancelled': 'danger'
+                       }}"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search View with State Filter Panel -->
+    <record id="view_booking_search" model="ir.ui.view">
+        <field name="name">booking.search</field>
+        <field name="model">train.booking</field>
+        <field name="arch" type="xml">
+            <search>
+                <!-- State Filter Panel -->
+                <searchpanel>
+                    <field name="state" string="Status" enable_counters="1"/>
+                    <field name="passenger_id" string="Passenger" enable_counters="1"/>
+                    <field name="train_id" string="Train" enable_counters="1"/>
+                </searchpanel>
+
+                <!-- Quick Filters -->
+                <filter name="confirmed" string="Confirmed" domain="[('state','=','confirmed')]"/>
+                <filter name="draft" string="Draft" domain="[('state','=','draft')]"/>
+                <filter name="cancelled" string="Cancelled" domain="[('state','=','cancelled')]"/>
+                <filter name="today" string="Today" domain="[('booking_date','>=',context_today().strftime('%Y-%m-%d 00:00:00'))]"/>
+
+                <!-- Group By Options -->
+                <group expand="0" string="Group By">
+                    <filter name="group_by_state" string="Status" context="{'group_by':'state'}"/>
+                    <filter name="group_by_passenger" string="Passenger" context="{'group_by':'passenger_id'}"/>
+                    <filter name="group_by_train" string="Train" context="{'group_by':'train_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Window Action -->
+    <record id="action_booking" model="ir.actions.act_window">
+        <field name="name">Train Bookings</field>
+        <field name="res_model">train.booking</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_booking_tree"/>
+        <field name="search_view_id" ref="view_booking_search"/>
+        <field name="context">{
+            'default_state': 'draft'
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create new bookings</p>
+        </field>
+    </record>
+</odoo>
+

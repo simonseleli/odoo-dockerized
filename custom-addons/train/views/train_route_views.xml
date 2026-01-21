@@ -1,0 +1,85 @@
+<odoo>
+
+    <record id="action_route" model="ir.actions.act_window">
+        <field name="name">Routes</field>
+        <field name="res_model">train.booking.route</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create new routes</p>
+        </field>
+    </record>
+
+    <record id="view_route_form" model="ir.ui.view">
+        <field name="name">route.form</field>
+        <field name="model">train.booking.route</field>
+        <field name="arch" type="xml">
+            <form string="Train Route">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="from_station_id"/>
+                        <field name="to_station_id"/>
+                        <field name="train_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+               <!-- Search View-->
+        <record id="view_train_route_search" model="ir.ui.view">
+            <field name="name">train.route.search</field>
+            <field name="model">train.booking.route</field>
+            <field name="arch" type="xml">
+                <search>
+
+                    <!-- Searchable Fields -->
+                    <field name="name" string="Route Name"/>
+                    <field name="from_station_id" string="Departure Station"/>
+                    <field name="to_station_id" string="Arrival Station"/>
+                    <field name="train_id" string="Train Name"/>
+
+                    <!-- Filters -->
+
+                    <!-- What This Does:
+                    This adds a filter named "Available" in the search dropdown.
+
+                    🔍 How It Works:
+                    When a user selects "Available", Odoo will apply this condition:
+                    state should be 'new' OR 'offer_received'
+                    This helps users quickly find available properties instead of searching manually.-->
+
+<!--                    <filter name="available" string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>-->
+
+                    <!-- Group By -->
+                    <!-- What This Does:
+                    This adds a "Group By" option in the search dropdown.
+
+                    🔍 How It Works:
+                    When a user selects "Group by Postcode", records in the list view will be grouped by their postcode field.
+                    The context="{'group_by': 'postcode'}" tells Odoo to apply the grouping.-->
+
+<!--                    <group expand="1" string="Group By">-->
+<!--                        <filter name="group_by_postcode" string="Postcode" domain="[]" context="{'group_by': 'postcode'}"/>-->
+<!--                        <filter name="group_by_state" string="State" domain="[]" context="{'group_by': 'state'}"/>-->
+<!--                    </group>-->
+                </search>
+            </field>
+        </record>
+
+
+    <record id="view_route_tree" model="ir.ui.view">
+        <field name="name">route.tree</field>
+        <field name="model">train.booking.route</field>
+        <field name="arch" type="xml">
+            <tree string="Routes">
+                <field name="name"/>
+                <field name="from_station_id"/>
+                <field name="to_station_id"/>
+                <field name="train_id"/>
+            </tree>
+        </field>
+    </record>
+
+
+</odoo>

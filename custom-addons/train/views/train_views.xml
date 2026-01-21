@@ -1,0 +1,49 @@
+<odoo>
+
+    <record id="view_train_form" model="ir.ui.view">
+        <field name="name">train.form</field>
+        <field name="model">train.booking.train</field>
+        <field name="arch" type="xml">
+            <form string="Train">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="capacity"/>
+                        <field name="booked_seats" readonly="1"/>
+                        <field name="available_seats" readonly="1"/>
+                        <field name="train_type"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_train_tree" model="ir.ui.view">
+        <field name="name">train.tree</field>
+        <field name="model">train.booking.train</field>
+        <field name="arch" type="xml">
+            <tree string="Trains">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="capacity"/>
+                <field name="booked_seats"/>
+                <field name="available_seats"/>
+                <field name="train_type"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="action_train" model="ir.actions.act_window">
+        <field name="name">Trains</field>
+        <field name="res_model">train.booking.train</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create new trains</p>
+        </field>
+    </record>
+
+</odoo>

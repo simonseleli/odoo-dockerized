@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo noupdate="0">
+
+    <!-- Module Category  -->
+    <!-- This section defines a new category called 'Train Booking System' under which all related groups will be categorized. -->
+    <record id="module_category_train" model="ir.module.category">
+        <field name="name">Train Booking System</field>
+        <field name="sequence">1</field>
+    </record>
+
+    <!--  User Groups  -->
+
+    <!-- 1. Passenger Group -->
+    <record id="group_train_passenger" model="res.groups">
+        <field name="name">Train Passenger</field>
+        <field name="category_id" ref="base.module_category_train_booking_system_groups"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">Passenger user will have access to only their Bookings and see all the trains, routes and available trains</field>
+    </record>
+
+    <!-- 2. Agent Group -->
+    <record id="group_train_agent" model="res.groups">
+        <field name="name">Train Agent</field>
+        <field name="category_id" ref="base.module_category_train_booking_system_groups"/>
+        <field name="implied_ids" eval="[(4, ref('train.group_train_passenger'))]"/>
+        <field name="comment">Agent user will have access to ====</field>
+    </record>
+
+    <!-- 3. Admin/Manager Group -->
+    <record id="group_train_manager" model="res.groups">
+        <field name="name">Train Manager</field>
+        <field name="category_id" ref="base.module_category_train_booking_system_groups"/>
+        <field name="implied_ids" eval="[(4, ref('train.group_train_agent'))]"/>
+        <!-- Doctors inherit all permissions from the Receptionist group -->
+        <field name="comment">Admin user will have access to patient details</field>
+    </record>
+
+
+
+    <!--  Access Rules  -->
+
+    <!-- This rule ensures that passenger can only view their own details -->
+    <record id="passenger_own_details_rule" model="ir.rule">
+        <field name="name">Passenger: View own records</field>
+        <field name="model_id" ref="model_train_passenger"/>
+        <field name="groups" eval="[(4, ref('train.group_train_passenger'))]"/>
+        <!-- This rule applies only to the Receptionist group -->
+        <field name="domain_force">[('user_id', '=', user.id)]</field>
+        <!-- Restricts access to only appointments created by the logged-in user -->
+    </record>
+
+    <!-- This rule allows Agents to view all Passengers -->
+    <record id="agent_all_passengers_rule" model="ir.rule">
+        <field name="name">Agents: View all Passengers</field>
+        <field name="model_id" ref="model_train_passenger"/>
+        <field name="groups" eval="[(4, ref('train.group_train_agent'))]"/>
+        <!-- This rule applies only to the Doctors group -->
+        <field name="domain_force">[]</field>
+        <!-- No restriction: doctors can see all appointment records -->
+    </record>
+
+    <!-- Passenger can only see their own bookings -->
+    <record id="rule_passenger_own_booking" model="ir.rule">
+        <field name="name">Passenger: See own booking</field>
+        <field name="model_id" ref="model_train_booking"/>
+        <field name="groups" eval="[(4, ref('train.group_train_passenger'))]"/>
+        <field name="domain_force">[('passenger_id.user_id', '=', user.id)]</field>
+    </record>
+
+    <!-- Agent can  see all own bookings -->
+    <record id="rule_manager_all_booking" model="ir.rule">
+        <field name="name">Manager: See all bookings</field>
+        <field name="model_id" ref="model_train_booking"/>
+        <field name="groups" eval="[(4, ref('train.group_train_agent'))]"/>
+        <field name="domain_force">[]</field>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Root Menu -->
+    <menuitem id="train_root_menu"
+              name="Train Booking"
+              sequence="10"/>
+
+    <menuitem id="train_frontDesk"
+              name="Trains Management"
+              parent="train_root_menu"
+              sequence="10"/>
+
+    <!-- Submenus in correct order -->
+    <menuitem id="menu_action_train"
+              name="Trains"
+              parent="train_root_menu"
+              sequence="10"
+              action="action_train"/>
+
+    <menuitem id="menu_action_train_station"
+              name="Stations"
+              parent="train_root_menu"
+              sequence="11"
+              action="action_station"/>
+
+<!--    <menuitem id="menu_action_train_available"-->
+<!--              name="Available Trains"-->
+<!--              parent="train_root_menu"-->
+<!--              sequence="12"-->
+<!--              action="action_available_trains"/>-->
+
+    <menuitem id="menu_action_passenger"
+              name="Passenger"
+              parent="train_root_menu"
+              sequence="13"
+              action="action_train_passenger"/>
+
+    <menuitem id="menu_action_train_booking"
+              name="Bookings"
+              parent="train_root_menu"
+              sequence="14"
+              action="action_booking"/>
+
+    <menuitem id="menu_action_train_routes"
+              name="Routes"
+              parent="train_root_menu"
+              sequence="10"
+              action="action_route"/>
+
+    <menuitem id="menu_action_tickets"
+              name="Tickets"
+              parent="train_root_menu"
+              action="action_ticket"/>
+
+</odoo>
