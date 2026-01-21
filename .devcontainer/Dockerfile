@@ -25,6 +25,6 @@ RUN groupadd --gid $USER_GID $USERNAME \
 RUN mkdir -p /var/lib/odoo/sessions \
     && chown -R $USERNAME:$USERNAME /var/lib/odoo
 
-# -------------------------------
+# Switch to vscode user
 USER $USERNAME
 WORKDIR /workspace
