@@ -1,36 +1,33 @@
 version: "3.8"
 
 services:
-  odoo:
+  odoo19:
     build: .
     depends_on:
-      - db
+      - db19
     volumes:
       - ../conf:/etc/odoo:ro
       - ../custom-addons:/mnt/extra-addons
-      - odoo-data:/var/lib/odoo
+      - odoo-data19:/var/lib/odoo
       - ..:/workspace
     ports:
       - "8069:8069"
     environment:
-      - HOST=db
+      - HOST=db19
       - USER=odoo
       - PASSWORD=odoo
     tty: true
     stdin_open: true
     working_dir: /workspace
     command: bash -c "sleep infinity"
-
-  db:
-    image: postgres:14
+  db19:
+    image: postgres:16
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: odoo
       POSTGRES_PASSWORD: odoo
     volumes:
-      - postgres-data:/var/lib/postgresql/data
-
+      - postgres-data19:/var/lib/postgresql/data
 volumes:
-  postgres-data:
-  odoo-data:
-
+  postgres-data19:
+  odoo-data19:

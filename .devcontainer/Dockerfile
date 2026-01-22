@@ -1,4 +1,4 @@
-FROM odoo:16.0
+FROM odoo:19.0
 
 # Root section: install dependencies
 USER root
@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
 
 # Create vscode user
 ARG USERNAME=vscode
-ARG USER_UID=1000
+ARG USER_UID=1001
 ARG USER_GID=$USER_UID
 
 RUN groupadd --gid $USER_GID $USERNAME \
