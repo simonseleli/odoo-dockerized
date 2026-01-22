@@ -1,44 +1,170 @@
-1. To run this app
-
-Open in dev container and then
-    write the command: python3 odoo-bin -c conf/odoo.conf
-
-2. To stop 
-    type ctrl+c
-
-3. To access the service 
-    http://localhost:8069
-   
+# Odoo Dockerized Development Environment
+This project provides a ready-to-use **Odoo development environment** using **Docker** and **VS Code Dev Containers**.
 
 
+## Prerequisites
 
-# Method 1: Use the Odoo binary from official image
-odoo
+Ensure you have the following installed on your host machine:
+* **Visual Studio Code**
 
-# Method 2: With more verbose logging
-/usr/bin/odoo -c /etc/odoo/odoo.conf --log-level=debug
-
-# Method 3: Run in background (to get terminal back)
-/usr/bin/odoo -c /etc/odoo/odoo.conf &
+* Extension: **Remote – Containers** (Dev Containers)
+* **Docker**
+* **Docker Compose**
 
 
 
-# Start Odoo (foreground - see logs)
-python3 odoo-bin -c conf/odoo.conf
+## Getting Started
 
-# Start Odoo (background)
-python3 odoo-bin -c conf/odoo.conf &
+### 1. Clone the Repository
 
-# Stop Odoo (if running in background)
-pkill -f "odoo-bin"
+```bash
+git clone https://github.com/simonseleli/odoo-dockerized.git
+```
 
-# Kill Odoo forcefully
-kill -9 $(pgrep -f "odoo-bin")
+### 2. Open the Project in VS Code
 
-# Check Odoo logs (if using docker-compose)
+* Open the cloned folder in **VS Code**
+* Open the **Command Palette** (`Ctrl + Shift + P`)
+* Select **Remote-Containers: Reopen in Container**
+
+This will:
+
+* Build and start the dev container using:
+
+  * `.devcontainer/devcontainer.json`
+  * `docker-compose.yml`
+  * `Dockerfile`
+* Open the workspace at `/workspace` inside the container
+* Provide a terminal as user `vscode` (with `sudo` access)
+
+---
+
+## Running the App
+
+Once inside the dev container
+(terminal prompt looks like: `vscode ➜ /workspace (your-branch) $`):
+
+---
+
+### Method 1: Simple Foreground Run
+
+```bash
+command: odoo
+```
+
+---
+
+### Method 2: Simple Foreground Run (Recommended for Development)
+
+Run Odoo in the foreground with live reload:
+
+```bash
+command: odoo -c /etc/odoo/odoo.conf --dev=reload
+```
+
+* `--dev=reload` enables auto-reloading on code changes
+* The config file `/etc/odoo/odoo.conf` is mounted from `./conf/odoo.conf`
+* The config includes paths for both built-in and custom addons
+
+---
+
+### Method 3: Verbose Logging
+
+For more detailed logs:
+
+```bash
+command: /usr/bin/odoo -c /etc/odoo/odoo.conf --log-level=debug --dev=reload
+```
+
+---
+
+### Method 4: Background Run
+
+Run Odoo in the background and free the terminal:
+
+```bash
+command: odoo -c /etc/odoo/odoo.conf --dev=reload &
+```
+
+Use this if you need the terminal for other tasks while Odoo runs.
+
+---
+
+## Accessing Services
+
+* **Odoo Web Interface**
+  [http://localhost:8069](http://localhost:8069)
+
+* **Default Admin Password**
+  `admin` (from `odoo.conf`)
+
+* **Database Management**
+  Create or restore databases via the web interface
+
+* **PostgreSQL Connection**
+
+```bash
+psql -h db -U odoo -d postgres
+```
+
+Password: `odoo`
+
+---
+
+## Stopping the App
+
+* **Foreground run**:
+  Press `Ctrl + C`
+  
+* **Reload mode**:
+  Press `Ctrl + C` **twice**
+
+---
+
+## Viewing Logs
+
+* **Inside the container**
+  Logs appear in real time when running in the foreground
+
+* **From the host machine**
+
+```bash
 docker compose -f .devcontainer/docker-compose.yml logs -f odoo
+```
+
+---
+
+## Customization
+
+### Custom Addons
+
+* Place your custom modules in:
+
+./custom-addons/
 
 
+* They are mounted to `/mnt/extra-addons`
+* Included in `addons_path` via `odoo.conf`
 
-https://chat.deepseek.com/share/iw961fyr3te44rrx4d
+### Configuration
 
+* Edit:
+
+```text
+./conf/odoo.conf
+```
+
+* Examples:
+
+  * Database settings
+  * Log levels
+* Rebuild the container if required
+
+### Rebuilding the Container
+
+If you update dev container files:
+
+* Open **Command Palette**
+* Select **Remote-Containers: Rebuild Container**
+
+---
