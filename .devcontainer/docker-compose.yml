@@ -19,7 +19,7 @@ services:
     tty: true
     stdin_open: true
     working_dir: /workspace
-    command: sleep infinity
+    command: bash -c "sleep infinity"
 
   db:
     image: postgres:14

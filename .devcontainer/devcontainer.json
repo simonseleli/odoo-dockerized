@@ -6,6 +6,7 @@
   "shutdownAction": "stopCompose",
   "remoteUser": "vscode",
   "forwardPorts": [8069,5432],
+  "postAttachCommand": "bash -c 'source ~/.bashrc'",
   "customizations": {
     "vscode": {
       "extensions": [
